@@ -1,0 +1,101 @@
+{
+  "name": "entropy-tracker",
+  "displayName": "Entropy Tracker",
+  "description": "Analyzes git history to detect files becoming dangerously complex — not by code complexity, but by tracking how many different reasons a file gets changed.",
+  "version": "0.1.0",
+  "publisher": "entropy-tracker",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Visualization"
+  ],
+  "keywords": [
+    "git",
+    "entropy",
+    "complexity",
+    "analysis",
+    "code-health"
+  ],
+  "activationEvents": [
+    "workspaceContains:.git"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "entropy-tracker",
+          "title": "Entropy Tracker",
+          "icon": "$(beaker)"
+        }
+      ]
+    },
+    "views": {
+      "entropy-tracker": [
+        {
+          "type": "webview",
+          "id": "entropyTracker.sidebar",
+          "name": "File Entropy"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "entropy.refresh",
+        "title": "Entropy: Refresh Analysis",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "entropy.openPanel",
+        "title": "Entropy: Open Sidebar Panel"
+      },
+      {
+        "command": "entropy.clearCache",
+        "title": "Entropy: Clear Cache & Re-analyze"
+      }
+    ],
+    "configuration": {
+      "title": "Entropy Tracker",
+      "properties": {
+        "entropy.lookbackDays": {
+          "type": "number",
+          "default": 90,
+          "description": "Number of days of git history to analyze.",
+          "minimum": 7,
+          "maximum": 365
+        },
+        "entropy.minCommitsToScore": {
+          "type": "number",
+          "default": 5,
+          "description": "Minimum number of commits a file must have to be scored.",
+          "minimum": 1,
+          "maximum": 50
+        },
+        "entropy.showDecorationsInExplorer": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show entropy score decorations on files in the Explorer."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts"
+  },
+  "dependencies": {
+    "natural": "^8.0.1",
+    "simple-git": "^3.27.0",
+    "sql.js": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/sql.js": "^1.4.9",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3"
+  }
+}
